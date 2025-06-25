@@ -28,6 +28,7 @@ from pipelex.reporting.reporting_protocol import ReportingProtocol
 from pipelex.tools.config.manager import config_manager
 from pipelex.tools.config.models import ConfigRoot
 from pipelex.tools.secrets.secrets_provider_abstract import SecretsProviderAbstract
+from pipelex.tools.storage.storage_provider_abstract import StorageProviderAbstract
 from pipelex.tools.templating.template_provider_abstract import TemplateProviderAbstract
 
 
@@ -44,6 +45,7 @@ class PipelexHub:
         # tools
         self._config: Optional[ConfigRoot] = None
         self._secrets_provider: Optional[SecretsProviderAbstract] = None
+        self._storage_provider: Optional[StorageProviderAbstract] = None
         self._template_provider: Optional[TemplateProviderAbstract] = None
         self._class_registry: Optional[ClassRegistryAbstract] = None
         # cogt
@@ -117,6 +119,9 @@ class PipelexHub:
 
     def set_class_registry(self, class_registry: ClassRegistryAbstract):
         self._class_registry = class_registry
+
+    def set_storage_provider(self, storage_provider: StorageProviderAbstract | None):
+        self._storage_provider = storage_provider
 
     # cogt
 
@@ -197,6 +202,11 @@ class PipelexHub:
         if self._class_registry is None:
             raise RuntimeError("ClassRegistry is not initialized")
         return self._class_registry
+    
+    def get_required_storage_provider(self) -> StorageProviderAbstract:
+        if self._storage_provider is None:
+            raise RuntimeError("StorageProvider is not initialized")
+        return self._storage_provider
 
     # cogt
 
@@ -295,6 +305,9 @@ def get_required_config() -> ConfigRoot:
 
 def get_secrets_provider() -> SecretsProviderAbstract:
     return get_pipelex_hub().get_required_secrets_provider()
+
+def get_storage_provider() -> StorageProviderAbstract:
+    return get_pipelex_hub().get_required_storage_provider()
 
 
 def get_template_provider() -> TemplateProviderAbstract:

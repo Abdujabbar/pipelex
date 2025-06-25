@@ -36,6 +36,7 @@ from pipelex.tools.func_registry import func_registry
 from pipelex.tools.runtime_manager import runtime_manager
 from pipelex.tools.secrets.env_secrets_provider import EnvSecretsProvider
 from pipelex.tools.secrets.secrets_provider_abstract import SecretsProviderAbstract
+from pipelex.tools.storage.storage_provider_abstract import StorageProviderAbstract
 from pipelex.tools.templating.template_library import TemplateLibrary
 from pipelex.tools.typing.pydantic_utils import format_pydantic_validation_error
 
@@ -172,9 +173,11 @@ class Pipelex:
         content_generator: Optional[ContentGeneratorProtocol] = None,
         pipe_router: Optional[PipeRouterProtocol] = None,
         structure_classes: Optional[List[Type[Any]]] = None,
+        storage_provider: Optional[StorageProviderAbstract] = None
     ):
         # tools
         self.pipelex_hub.set_secrets_provider(secrets_provider or EnvSecretsProvider())
+        self.pipelex_hub.set_storage_provider(storage_provider)
 
         # cogt
         self.pipelex_hub.set_content_generator(content_generator or ContentGenerator())
