@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Any
 
 
 class StorageProviderAbstract(ABC):
@@ -8,4 +9,8 @@ class StorageProviderAbstract(ABC):
 
     @abstractmethod
     def store(self, data: bytes) -> str:
+        pass
+
+    @abstractmethod
+    def get_client(self) -> Any:
         pass
